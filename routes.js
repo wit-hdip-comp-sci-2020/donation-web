@@ -12,6 +12,7 @@ module.exports = [
   { method: "POST", path: "/login", config: Accounts.login },
 
   { method: "GET", path: "/home", config: Donations.home },
+  { method: "POST", path: "/donate", config: Donations.donate },
   { method: "GET", path: "/report", config: Donations.report },
 
   {
