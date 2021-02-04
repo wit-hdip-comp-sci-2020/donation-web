@@ -38,6 +38,7 @@ async function init() {
       password: "password-should-be-32-characters",
       isSecure: false,
     },
+    redirectTo: "/",
   });
   server.auth.default("session");
   server.route(require("./routes"));
