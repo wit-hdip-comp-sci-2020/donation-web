@@ -1,6 +1,7 @@
 "use strict";
 
 const Mongoose = require("mongoose");
+const Boom = require("@hapi/boom");
 const Schema = Mongoose.Schema;
 
 const userSchema = new Schema({
@@ -16,7 +17,10 @@ userSchema.statics.findByEmail = function(email) {
 
 userSchema.methods.comparePassword = function(candidatePassword) {
   const isMatch = this.password === candidatePassword;
-  return isMatch;
+  if (!isMatch) {
+    throw Boom.unauthorized('Password mismatch');
+  }
+  return this;
 };
 
 module.exports = Mongoose.model("User", userSchema);
