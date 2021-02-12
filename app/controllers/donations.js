@@ -1,4 +1,5 @@
 "use strict";
+const Donation = require("../models/donation");
 
 const Donations = {
   home: {
@@ -7,19 +8,22 @@ const Donations = {
     },
   },
   report: {
-    handler: function (request, h) {
+    handler: async function (request, h) {
+      const donations = await Donation.find().lean();
       return h.view("report", {
         title: "Donations to Date",
-        donations: this.donations,
+        donations: donations,
       });
     },
   },
   donate: {
-    handler: function (request, h) {
+    handler: async function (request, h) {
       const data = request.payload;
-      var donorEmail = request.auth.credentials.id;
-      data.donor = this.users[donorEmail];
-      this.donations.push(data);
+      const newDonation = new Donation({
+        amount: data.amount,
+        method: data.method,
+      });
+      await newDonation.save();
       return h.redirect("/report");
     },
   },
