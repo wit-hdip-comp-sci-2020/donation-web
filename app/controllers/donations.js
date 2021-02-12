@@ -1,5 +1,6 @@
 "use strict";
 const Donation = require("../models/donation");
+const User = require("../models/user");
 
 const Donations = {
   home: {
@@ -18,10 +19,14 @@ const Donations = {
   },
   donate: {
     handler: async function (request, h) {
+      const id = request.auth.credentials.id;
+      const user = await User.findById(id);
       const data = request.payload;
       const newDonation = new Donation({
         amount: data.amount,
         method: data.method,
+        firstName: user.firstName,
+        lastName: user.lastName,
       });
       await newDonation.save();
       return h.redirect("/report");
