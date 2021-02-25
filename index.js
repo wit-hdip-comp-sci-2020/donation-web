@@ -5,10 +5,16 @@ const Inert = require("@hapi/inert");
 const Vision = require("@hapi/vision");
 const Handlebars = require("handlebars");
 const Cookie = require("@hapi/cookie");
-require('./app/models/db');
-const env = require('dotenv');
+require("./app/models/db");
+const env = require("dotenv");
 
-env.config();
+const dotenv = require("dotenv");
+
+const result = dotenv.config();
+if (result.error) {
+  console.log(result.error.message);
+  process.exit(1);
+}
 
 const server = Hapi.server({
   port: 3000,
@@ -34,7 +40,7 @@ async function init() {
     cookie: {
       name: process.env.cookie_name,
       password: process.env.cookie_password,
-      isSecure: false
+      isSecure: false,
     },
     redirectTo: "/",
   });
