@@ -2,6 +2,7 @@
 const Donation = require("../models/donation");
 const User = require("../models/user");
 const Candidate = require("../models/candidate");
+const Joi = require("@hapi/joi");
 
 const Donations = {
   home: {
@@ -13,13 +14,39 @@ const Donations = {
   report: {
     handler: async function (request, h) {
       const donations = await Donation.find().populate("donor").populate("candidate").lean();
+      let total = 0;
+      donations.forEach((donation) => {
+        total += donation.amount;
+      });
       return h.view("report", {
         title: "Donations to Date",
         donations: donations,
+        total: total,
       });
     },
   },
   donate: {
+    validate: {
+      payload: {
+        amount: Joi.number().required(),
+        method: Joi.string().required(),
+        candidate: Joi.string().required(),
+      },
+      options: {
+        abortEarly: false,
+      },
+      failAction: async function (request, h, error) {
+        const candidates = await Candidate.find().lean();
+        return h
+          .view("home", {
+            title: "Invalid Donation",
+            candidates: candidates,
+            errors: error.details,
+          })
+          .takeover()
+          .code(400);
+      },
+    },
     handler: async function (request, h) {
       try {
         const id = request.auth.credentials.id;
