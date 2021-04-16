@@ -19,4 +19,6 @@ module.exports = [
   { method: "GET", path: "/api/candidates/{id}/donations", config: Donations.findByCandidate },
   { method: "POST", path: "/api/candidates/{id}/donations", config: Donations.makeDonation },
   { method: "DELETE", path: "/api/donations", config: Donations.deleteAll },
+
+  { method: "POST", path: "/api/users/authenticate", config: Users.authenticate },
 ];
