@@ -6,6 +6,7 @@ const Vision = require("@hapi/vision");
 const Handlebars = require("handlebars");
 const Cookie = require("@hapi/cookie");
 const Joi = require("@hapi/joi");
+const utils = require("./app/api/utils.js");
 require("./app/models/db");
 const env = require("dotenv");
 
@@ -26,6 +27,7 @@ async function init() {
   await server.register(Inert);
   await server.register(Vision);
   await server.register(Cookie);
+  await server.register(require("hapi-auth-jwt2"));
   server.validator(require("@hapi/joi"));
   server.views({
     engines: {
@@ -46,6 +48,12 @@ async function init() {
     },
     redirectTo: "/",
   });
+  server.auth.strategy("jwt", "jwt", {
+    key: "secretpasswordnotrevealedtoanyone",
+    validate: utils.validate,
+    verifyOptions: { algorithms: ["HS256"] },
+  });
+
   server.auth.default("session");
   server.route(require("./routes"));
   server.route(require("./routes-api"));
