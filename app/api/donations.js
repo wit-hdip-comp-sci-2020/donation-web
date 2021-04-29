@@ -11,7 +11,7 @@ const Donations = {
       strategy: "jwt",
     },
     handler: async function (request, h) {
-      const donations = await Donation.find();
+      const donations = await Donation.find().populate("candidate").populate("donor");
       return donations;
     },
   },
