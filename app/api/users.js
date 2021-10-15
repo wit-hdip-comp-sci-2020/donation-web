@@ -1,10 +1,10 @@
 "use strict";
 
-const User = require("../models/user");
-const Boom = require("@hapi/boom");
-const utils = require("./utils.js");
+import { User } from "../models/user.js";
+import Boom from "@hapi/boom";
+import { createToken } from "./utils.js";
 
-const Users = {
+export const Users = {
   find: {
     auth: {
       strategy: "jwt",
@@ -96,7 +96,7 @@ const Users = {
         } else if (user.password !== request.payload.password) {
           return Boom.unauthorized("Invalid password");
         } else {
-          const token = utils.createToken(user);
+          const token = createToken(user);
           return h.response({ success: true, token: token }).code(201);
         }
       } catch (err) {
@@ -105,5 +105,3 @@ const Users = {
     },
   },
 };
-
-module.exports = Users;

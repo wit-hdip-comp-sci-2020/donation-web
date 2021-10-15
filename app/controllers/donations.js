@@ -1,10 +1,10 @@
 "use strict";
-const Donation = require("../models/donation");
-const User = require("../models/user");
-const Candidate = require("../models/candidate");
-const Joi = require("@hapi/joi");
+import { Donation } from "../models/donation.js";
+import { User } from "../models/user.js";
+import { Candidate } from "../models/candidate.js";
+import Joi from "@hapi/joi";
 
-const Donations = {
+export const Donations = {
   home: {
     handler: async function (request, h) {
       const candidates = await Candidate.find().lean();
@@ -73,5 +73,3 @@ const Donations = {
     },
   },
 };
-
-module.exports = Donations;

@@ -1,9 +1,9 @@
 "use strict";
-const User = require("../models/user");
-const Boom = require("@hapi/boom");
-const Joi = require("@hapi/joi");
+import { User } from "../models/user.js";
+import Boom from "@hapi/boom";
+import Joi from "@hapi/joi";
 
-const Accounts = {
+export const Accounts = {
   index: {
     auth: false,
     handler: function (request, h) {
@@ -157,5 +157,3 @@ const Accounts = {
     },
   },
 };
-
-module.exports = Accounts;

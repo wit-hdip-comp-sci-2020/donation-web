@@ -1,6 +1,6 @@
 "use strict";
 
-const Mongoose = require("mongoose");
+import Mongoose from "mongoose";
 const Schema = Mongoose.Schema;
 
 const candidateSchema = Schema({
@@ -9,4 +9,4 @@ const candidateSchema = Schema({
   office: String,
 });
 
-module.exports = Mongoose.model("Candidate", candidateSchema);
+export const Candidate = Mongoose.model("Candidate", candidateSchema);

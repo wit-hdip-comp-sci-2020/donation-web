@@ -1,6 +1,6 @@
 "use strict";
 
-const Mongoose = require("mongoose");
+import Mongoose from "mongoose";
 const Schema = Mongoose.Schema;
 
 const donationSchema = new Schema({
@@ -16,4 +16,4 @@ const donationSchema = new Schema({
   },
 });
 
-module.exports = Mongoose.model("Donation", donationSchema);
+export const Donation = Mongoose.model("Donation", donationSchema);

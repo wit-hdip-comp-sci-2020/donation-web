@@ -1,15 +1,15 @@
 "use strict";
 
-const assert = require("chai").assert;
-const DonationService = require("./donation-service");
-const fixtures = require("./fixtures.json");
-const utils = require("../app/api/utils.js");
+import { assert } from "chai";
+import { DonationService } from "./donation-service.js";
+import * as fixtures from "./fixtures.json";
+import { decodeToken } from "../app/api/utils.js";
 
 suite("Authentication API tests", function () {
   let users = fixtures.users;
   let newUser = fixtures.newUser;
 
-  const donationService = new DonationService(fixtures.donationService);
+  const donationService = new DonationService(fixtures.default.donationService);
 
   setup(async function () {
     await donationService.deleteAllUsers();
@@ -26,7 +26,7 @@ suite("Authentication API tests", function () {
     const returnedUser = await donationService.createUser(newUser);
     const response = await donationService.authenticate(newUser);
 
-    const userInfo = utils.decodeToken(response.token);
+    const userInfo = decodeToken(response.token);
     assert.equal(userInfo.email, returnedUser.email);
     assert.equal(userInfo.userId, returnedUser._id);
   });

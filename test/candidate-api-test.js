@@ -1,16 +1,16 @@
 "use strict";
 
-const assert = require("chai").assert;
-const DonationService = require("./donation-service");
-const fixtures = require("./fixtures.json");
-const _ = require("lodash");
+import { assert } from "chai";
+import { DonationService } from "./donation-service.js";
+import * as fixtures from "./fixtures.json";
+import lowdash from "lodash";
 
 suite("Candidate API tests", function () {
-  let candidates = fixtures.candidates;
-  let newCandidate = fixtures.newCandidate;
+  let candidates = fixtures.default.candidates;
+  let newCandidate = fixtures.default.newCandidate;
 
-  const donationService = new DonationService(fixtures.donationService);
-  let newUser = fixtures.newUser;
+  const donationService = new DonationService(fixtures.default.donationService);
+  let newUser = fixtures.default.newUser;
 
   suiteSetup(async function () {
     await donationService.deleteAllUsers();
@@ -33,7 +33,7 @@ suite("Candidate API tests", function () {
 
   test("create a candidate", async function () {
     const returnedCandidate = await donationService.createCandidate(newCandidate);
-    assert(_.some([returnedCandidate], newCandidate), "returnedCandidate must be a superset of newCandidate");
+    assert(lowdash.some([returnedCandidate], newCandidate), "returnedCandidate must be a superset of newCandidate");
     assert.isDefined(returnedCandidate._id);
   });
 
@@ -74,7 +74,7 @@ suite("Candidate API tests", function () {
 
     const allCandidates = await donationService.getCandidates();
     for (var i = 0; i < candidates.length; i++) {
-      assert(_.some([allCandidates[i]], candidates[i]), "returnedCandidate must be a superset of newCandidate");
+      assert(lowdash.some([allCandidates[i]], candidates[i]), "returnedCandidate must be a superset of newCandidate");
     }
   });
 

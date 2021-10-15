@@ -1,8 +1,8 @@
 "use strict";
 
-const axios = require("axios");
+import axios from "axios";
 
-class DonationService {
+export class DonationService {
   constructor(baseUrl) {
     this.baseUrl = baseUrl;
   }
@@ -138,5 +138,3 @@ class DonationService {
     axios.defaults.headers.common["Authorization"] = "";
   }
 }
-
-module.exports = DonationService;

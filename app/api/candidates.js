@@ -1,9 +1,9 @@
 "use strict";
 
-const Candidate = require("../models/candidate");
-const Boom = require("@hapi/boom");
+import { Candidate } from "../models/candidate.js";
+import Boom from "@hapi/boom";
 
-const Candidates = {
+export const Candidates = {
   find: {
     auth: {
       strategy: "jwt",
@@ -68,5 +68,3 @@ const Candidates = {
     },
   },
 };
-
-module.exports = Candidates;

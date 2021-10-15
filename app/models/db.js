@@ -1,35 +1,42 @@
 "use strict";
 
-const env = require("dotenv");
-env.config();
+import * as dotenv from "dotenv";
+import * as data from "./seed-data.json";
 
-const Mongoose = require("mongoose");
+import Mongoose from "mongoose";
+import { Donation } from "./donation.js";
+import { Candidate } from "./candidate.js";
+import { User } from "./user.js";
+import seeder from "mais-mongoose-seeder";
 
-Mongoose.set("useNewUrlParser", true);
-Mongoose.set("useUnifiedTopology", true);
+export function initDB() {
+  dotenv.config();
 
-Mongoose.connect(process.env.db);
-const db = Mongoose.connection;
+  Mongoose.set("useNewUrlParser", true);
+  Mongoose.set("useUnifiedTopology", true);
 
-async function seed() {
-  var seeder = require("mais-mongoose-seeder")(Mongoose);
-  const data = require("./seed-data.json");
-  const Donation = require("./donation");
-  const Candidate = require("./candidate.js");
-  const User = require("./user");
-  const dbData = await seeder.seed(data, { dropDatabase: false, dropCollections: true });
-  console.log(dbData);
+  Mongoose.connect(process.env.db);
+  const db = Mongoose.connection;
+
+  async function seed() {
+    // var seed = seeder(Mongoose);
+    const users = await User.find();
+    const candidates = await Candidate.find();
+    const donations = await Donation.find();
+    const dbData = await seeder(Mongoose).seed(data.default, { dropDatabase: false, dropCollections: true });
+    console.log(dbData);
+  }
+
+  db.on("error", function (err) {
+    console.log(`database connection error: ${err}`);
+  });
+
+  db.on("disconnected", function () {
+    console.log("database disconnected");
+  });
+
+  db.once("open", function () {
+    console.log(`database connected to ${this.name} on ${this.host}`);
+    seed();
+  });
 }
-
-db.on("error", function (err) {
-  console.log(`database connection error: ${err}`);
-});
-
-db.on("disconnected", function () {
-  console.log("database disconnected");
-});
-
-db.once("open", function () {
-  console.log(`database connected to ${this.name} on ${this.host}`);
-  seed();
-});

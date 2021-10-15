@@ -1,16 +1,16 @@
 "use strict";
 
-const assert = require("chai").assert;
-const DonationService = require("./donation-service");
-const fixtures = require("./fixtures.json");
-const _ = require("lodash");
+import { assert } from "chai";
+import { DonationService } from "./donation-service.js";
+import * as fixtures from "./fixtures.json";
+import lowdash from "lodash";
 
 suite("Donation API tests", function () {
-  let donations = fixtures.donations;
-  let newCandidate = fixtures.newCandidate;
-  let newUser = fixtures.newUser;
+  let donations = fixtures.default.donations;
+  let newCandidate = fixtures.default.newCandidate;
+  let newUser = fixtures.default.newUser;
 
-  const donationService = new DonationService(fixtures.donationService);
+  const donationService = new DonationService(fixtures.default.donationService);
 
   suiteSetup(async function () {
     await donationService.deleteAllUsers();
@@ -36,7 +36,7 @@ suite("Donation API tests", function () {
     const returnedDonations = await donationService.getDonations(returnedCandidate._id);
     console.log(returnedDonations);
     assert.equal(returnedDonations.length, 1);
-    assert(_.some([returnedDonations[0]], donations[0]), "returned donation must be a superset of donation");
+    assert(lowdash.some([returnedDonations[0]], donations[0]), "returned donation must be a superset of donation");
   });
 
   test("create multiple donations", async function () {
@@ -48,7 +48,7 @@ suite("Donation API tests", function () {
     const returnedDonations = await donationService.getDonations(returnedCandidate._id);
     assert.equal(returnedDonations.length, donations.length);
     for (var i = 0; i < donations.length; i++) {
-      assert(_.some([returnedDonations[i]], donations[i]), "returned donation must be a superset of donation");
+      assert(lowdash.some([returnedDonations[i]], donations[i]), "returned donation must be a superset of donation");
     }
   });
 
@@ -72,6 +72,6 @@ suite("Donation API tests", function () {
     assert.isDefined(returnedDonations[0].donor);
 
     const users = await donationService.getUsers();
-    assert(_.some([users[0]], newUser), "returnedUser must be a superset of newUser");
+    assert(lowdash.some([users[0]], newUser), "returnedUser must be a superset of newUser");
   });
 });

@@ -1,14 +1,14 @@
-const jwt = require("jsonwebtoken");
-const User = require("../models/user");
+import jwt from "jsonwebtoken";
+import { User } from "../models/user.js";
 
-exports.createToken = function (user) {
+export function createToken(user) {
   return jwt.sign({ id: user._id, email: user.email }, "secretpasswordnotrevealedtoanyone", {
     algorithm: "HS256",
     expiresIn: "1h",
   });
-};
+}
 
-exports.decodeToken = function (token) {
+export function decodeToken(token) {
   var userInfo = {};
   try {
     var decoded = jwt.verify(token, "secretpasswordnotrevealedtoanyone");
@@ -17,18 +17,18 @@ exports.decodeToken = function (token) {
   } catch (e) {}
 
   return userInfo;
-};
+}
 
-exports.validate = async function (decoded, request) {
+export async function validate(decoded, request) {
   const user = await User.findOne({ _id: decoded.id });
   if (!user) {
     return { isValid: false };
   } else {
     return { isValid: true };
   }
-};
+}
 
-exports.getUserIdFromRequest = function (request) {
+export function getUserIdFromRequest(request) {
   var userId = null;
   try {
     const authorization = request.headers.authorization;
@@ -39,4 +39,4 @@ exports.getUserIdFromRequest = function (request) {
     userId = null;
   }
   return userId;
-};
+}

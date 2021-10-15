@@ -1,8 +1,10 @@
-const Candidates = require("./app/api/candidates");
-const Users = require("./app/api/users");
-const Donations = require("./app/api/donations");
+"use strict";
 
-module.exports = [
+import { Donations } from "./app/api/donations.js";
+import { Candidates } from "./app/api/candidates.js";
+import { Users } from "./app/api/users.js";
+
+export const apiRoutes = [
   { method: "GET", path: "/api/candidates", config: Candidates.find },
   { method: "GET", path: "/api/candidates/{id}", config: Candidates.findOne },
   { method: "POST", path: "/api/candidates", config: Candidates.create },

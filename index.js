@@ -1,16 +1,22 @@
 "use strict";
 
-const Hapi = require("@hapi/hapi");
-const Inert = require("@hapi/inert");
-const Vision = require("@hapi/vision");
-const Handlebars = require("handlebars");
-const Cookie = require("@hapi/cookie");
-const Joi = require("@hapi/joi");
-const utils = require("./app/api/utils.js");
-require("./app/models/db");
-const env = require("dotenv");
+import Hapi from "@hapi/hapi";
+import Inert from "@hapi/inert";
+import Vision from "@hapi/vision";
+import Cookie from "@hapi/cookie";
+import Joi from "@hapi/joi";
+import Handlebars from "handlebars";
+import dotenv from "dotenv";
+import jwt from "hapi-auth-jwt2";
+import { routes } from "./routes.js";
+import { apiRoutes } from "./routes-api.js";
+import { initDB } from "./app/models/db.js";
+import { validate } from "./app/api/utils.js";
 
-const dotenv = require("dotenv");
+import path from "path";
+import { fileURLToPath } from "url";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const result = dotenv.config();
 if (result.error) {
@@ -27,11 +33,11 @@ async function init() {
   await server.register(Inert);
   await server.register(Vision);
   await server.register(Cookie);
-  await server.register(require("hapi-auth-jwt2"));
-  server.validator(require("@hapi/joi"));
+  await server.register(jwt);
+  server.validator(Joi);
   server.views({
     engines: {
-      hbs: require("handlebars"),
+      hbs: Handlebars,
     },
     relativeTo: __dirname,
     path: "./app/views",
@@ -50,13 +56,13 @@ async function init() {
   });
   server.auth.strategy("jwt", "jwt", {
     key: "secretpasswordnotrevealedtoanyone",
-    validate: utils.validate,
+    validate: validate,
     verifyOptions: { algorithms: ["HS256"] },
   });
-
   server.auth.default("session");
-  server.route(require("./routes"));
-  server.route(require("./routes-api"));
+  server.route(routes);
+  server.route(apiRoutes);
+  initDB();
   await server.start();
   console.log(`Server running at: ${server.info.uri}`);
 }

@@ -1,11 +1,11 @@
 "use strict";
 
-const Donation = require("../models/donation");
-const Candidate = require("../models/candidate");
-const Boom = require("@hapi/boom");
-const utils = require("./utils.js");
+import { Donation } from "../models/donation.js";
+import { Candidate } from "../models/candidate.js";
+import Boom from "@hapi/boom";
+import { getUserIdFromRequest } from "./utils.js";
 
-const Donations = {
+export const Donations = {
   findAll: {
     auth: {
       strategy: "jwt",
@@ -30,7 +30,7 @@ const Donations = {
       strategy: "jwt",
     },
     handler: async function (request, h) {
-      const userId = utils.getUserIdFromRequest(request);
+      const userId = getUserIdFromRequest(request);
       let donation = new Donation(request.payload);
       const candidate = await Candidate.findOne({ _id: request.params.id });
       if (!candidate) {
@@ -53,5 +53,3 @@ const Donations = {
     },
   },
 };
-
-module.exports = Donations;
