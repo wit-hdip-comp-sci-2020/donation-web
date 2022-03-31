@@ -1,0 +1,30 @@
+<div class="columns is-vcentered">
+  <div class="column has-text-centered">
+    <form action="/donate" method="POST">
+      <div class="field">
+        <label class="label">Enter Amount</label> <input class="input" type="number" placeholder="Euros" name="amount">
+      </div>
+      <div class="field">
+        <div class="control">
+          <label class="radio"> <input type="radio" name="method" value="paypal"> Paypal </label>
+          <label class="radio"> <input type="radio" name="method" value="cash"> Cash </label>
+        </div>
+      </div>
+      <div class="field">
+        <div class="select">
+          <select name="candidate">
+            {{#each candidates }}
+              <option> {{lastName}},{{firstName}}</option>
+            {{/each}}
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <div class="control">
+          <button class="button is-link is-light">Donate</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+

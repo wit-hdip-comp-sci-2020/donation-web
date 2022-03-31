@@ -1,0 +1,30 @@
+<div class="columns is-vcentered">
+  <div class="column is-two-thirds">
+    {{> title-card title="Donation Services Inc." subTitle="Sign up or Log in"}}
+  </div>
+  <div class="column">
+    {{> welcome-menu }}
+  </div>
+</div>
+
+
+<div class="columns is-vcentered">
+  <div class="column has-text-centered">
+    <img width="300" src="images/homer2.png">
+  </div>
+  <div class="box column section">
+    <h1 class="title">Log in</h1>
+    <form action="/authenticate" method="POST">
+      <div class="field">
+        <label class="label">Email</label> <input class="input" type="text" placeholder="Enter email" name="email">
+      </div>
+      <div class="field">
+        <label class="label">Password</label> <input class="input" type="password" placeholder="Enter Password"
+                                                     name="password">
+      </div>
+      <div class="field is-grouped">
+        <button class="button is-link">Submit</button>
+      </div>
+    </form>
+  </div>
+</div>

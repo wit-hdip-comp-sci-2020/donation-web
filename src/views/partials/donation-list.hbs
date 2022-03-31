@@ -1,0 +1,22 @@
+<table class="table">
+  <thead>
+    <th>Amount</th>
+    <th>Method donated</th>
+    <th>Donor</th>
+    <th>Candidate</th>
+  </thead>
+  <tbody class="uk-text-left">
+    {{#each donations}}
+      <tr>
+        <td>{{amount}}</td>
+        <td>{{method}}</td>
+        <td> {{donor.firstName}} {{donor.lastName}} </td>
+        <td>{{candidate.lastName}}, {{candidate.firstName}}</td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>
+<div class="box">
+  <div class="title is-5"> Total:  {{total}} </div>
+</div>
+
